@@ -65,7 +65,6 @@ def processXlsx(file):
             for col in range(n_col):
                 # excel col and row start from 1
                 cell = sheet.cell(row+1, col+1)
-                cell_coordinate = cell.coordinate
                 cell_value = cell.value
                 if not cell_value == None:
                     cell_value = convertValueToStrippedString(cell_value)
