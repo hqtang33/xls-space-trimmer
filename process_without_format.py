@@ -11,6 +11,7 @@ if __name__ == "__main__":
     if not os.path.exists(OUTPUT_PATH):
         os.mkdir(OUTPUT_PATH)
 
+    count = 0
     for file in files:
         print('Processing file: {}'.format(file))
         book = xlrd.open_workbook(file)
@@ -24,9 +25,19 @@ if __name__ == "__main__":
             n_row = sheet.nrows
             for row in range(n_row):
                 for col in range(n_col):
-                    cell_value = sheet.cell_value(rowx=row, colx=col).strip()
+                    cell_value = sheet.cell_value(rowx=row, colx=col)
+                    if type(cell_value) == float:
+                        cell_value = str(int(cell_value))
+                    elif type(cell_value) == int:
+                        cell_value = str(cell_value)
+                    else:
+                        cell_value = cell_value.strip()
                     new_sheet.write(row, col, cell_value)
         
         output_path = os.path.join(OUTPUT_PATH, file)
         new_book.save(output_path)
         print('Saved file: {}'.format(output_path))
+        print('--------------------------------------')
+        count+=1
+    print('\n{} files processed...'.format(count))
+    input('Press any key to close...')
